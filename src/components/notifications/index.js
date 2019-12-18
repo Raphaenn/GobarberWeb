@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { MdNotifications } from "react-icons/md";
 import { parseISO, formatDistance } from "date-fns";
 import pt from "date-fns/locale/pt";
@@ -12,6 +12,13 @@ export default function Notifications() {
     const [ visible, setVisible] = useState(false);
     const [ notifications, setNotificatios ] = useState([]);
 
+    // chance ball notification - percorrer array para achar um read = false e retornar true or false através dos !!
+    const hasUnread = useMemo(
+        () => !!notifications.find(notification => notification.read === false),
+        [notifications]
+    );
+
+    // conectar a api para pegar as notificações e adicionar o tempo das mais recentes
     useEffect(() => {
         async function loadNotifications() {
             const response = await api.get("notifications");
@@ -31,6 +38,7 @@ export default function Notifications() {
         loadNotifications()
     }, []);
 
+    // Exibir e escnder notificações
     function handleToggleVisible() {
         setVisible(!visible)
     };
@@ -46,7 +54,7 @@ export default function Notifications() {
 
     return (
         <Container>
-            <Badge onClick={handleToggleVisible} hasUndred>
+            <Badge onClick={handleToggleVisible} hasUnread={hasUnread}>
                 <MdNotifications color="#7159c1" size={20} />
             </Badge>
 
