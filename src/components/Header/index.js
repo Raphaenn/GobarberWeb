@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import Notifications from "../../components/notifications";
@@ -7,6 +8,10 @@ import logoP from "../../assets/logo_purple.svg";
 import { Container, Content, Profile } from "./styles";
 
 export default function Header() {
+
+    // exibir em tempo real as informações do usuário no header
+    const profile = useSelector(state => state.user.profile);
+
     return (
         <Container>
             <Content>
@@ -20,10 +25,10 @@ export default function Header() {
                 
                     <Profile>
                         <div>
-                            <strong>Raphael Neves</strong>
+                            <strong>{profile.name}</strong>
                             <Link to="/profile">Meu perfil</Link>
                         </div>
-                        <img src="https://api.adorable.io/avatars/50/abott@adorable.png" alt="Profile" />
+                        <img src={ profile.avatar.name || "https://api.adorable.io/avatars/50/abott@adorable.png"} alt="Profile" />
                     </Profile>
                 </aside>
             </Content>

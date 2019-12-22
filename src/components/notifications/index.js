@@ -12,7 +12,7 @@ export default function Notifications() {
     const [ visible, setVisible] = useState(false);
     const [ notifications, setNotificatios ] = useState([]);
 
-    // chance ball notification - percorrer array para achar um read = false e retornar true or false através dos !!
+    // change ball notification - percorrer array para achar um read = false e retornar true or false através dos !!
     const hasUnread = useMemo(
         () => !!notifications.find(notification => notification.read === false),
         [notifications]
@@ -64,7 +64,10 @@ export default function Notifications() {
                         <Notification key={notification._id} unread={!notification.read}>
                         <p>{notification.content}</p>
                         <time>{notification.timeDistance}</time>
-                        <button type="button" onClick={() => {handleMarkRead(notification._id)}} >Marcar como lida</button>
+                        {/* Exibir botao só se tiver notificaçao nao lida */}  
+                        {!notification.read && (
+                            <button type="button" onClick={() => {handleMarkRead(notification._id)}} >Marcar como lida</button>
+                        )}
                     </Notification>
                     ))}
                 </Scroll>
